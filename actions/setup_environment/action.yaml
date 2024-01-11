@@ -4,6 +4,9 @@ inputs:
   enable_go:
     description: Whether to enable go specific features, such as caching.
     default: "false"
+  enable_go_cache:
+    description: Wether you want to cache the go dependencies
+    default: "true"
   enable_npm:
     description: Whether to enable npm specific features, such as caching.
     default: "false"
@@ -11,17 +14,11 @@ runs:
   using: composite
   steps:
     - name: Install Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5
       if: inputs.enable_go == 'true'
       with:
         go-version: 1.21.x
-    - uses: actions/cache@v3.0.8
-      if: inputs.enable_go == 'true'
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
+        cache: ${{ inputs.enable_go_cache }}
     - name: Install nodejs
       uses: actions/setup-node@v3
       if: inputs.enable_npm == 'true'
