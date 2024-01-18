@@ -15,7 +15,7 @@ inputs:
     default: "false"
   cue_version:
     description: The Cue version to be used if Cue is enable
-    default: "0.7.0"
+    default: "v0.7.0"
   enable_npm:
     description: Whether to enable npm specific features, such as caching.
     default: "false"
