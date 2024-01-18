@@ -29,7 +29,7 @@ runs:
         go-version: ${{ inputs.go_version }}
         cache: ${{ inputs.enable_go_cache }}
     - name: Install Cue
-      if: $ {{ inputs.enable_go == 'true' && inputs.enable_cue == 'true' }}
+      if: ${{ inputs.enable_go == 'true' && inputs.enable_cue == 'true' }}
       run: go install cuelang.org/go/cmd/cue@${{  inputs.cue_version }}
       shell: bash
     - name: Install nodejs
