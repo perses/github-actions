@@ -4,9 +4,18 @@ inputs:
   enable_go:
     description: Whether to enable go specific features, such as caching.
     default: "false"
+  go_version:
+    description: The Go version to be used if Go is enable
+    default: "1.21.x"
   enable_go_cache:
-    description: Wether you want to cache the go dependencies
+    description: Whether you want to cache the go dependencies
     default: "true"
+  enable_cue:
+    description: Whether you want to install the cue binary
+    default: "false"
+  cue_version:
+    description: The Cue version to be used if Cue is enable
+    default: "0.7.0"
   enable_npm:
     description: Whether to enable npm specific features, such as caching.
     default: "false"
@@ -17,10 +26,14 @@ runs:
       uses: actions/setup-go@v5
       if: inputs.enable_go == 'true'
       with:
-        go-version: 1.21.x
+        go-version: ${{ inputs.go_version }}
         cache: ${{ inputs.enable_go_cache }}
+    - name: Install Cue
+      if: $ {{ inputs.enable_go == 'true' && inputs.enable_cue == 'true' }}
+      run: go install cuelang.org/go/cmd/cue@${{  inputs.cue_version }}
+      shell: bash
     - name: Install nodejs
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       if: inputs.enable_npm == 'true'
       with:
         node-version-file: "ui/.nvmrc"
