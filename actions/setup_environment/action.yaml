@@ -21,7 +21,7 @@ inputs:
     default: "false"
   nvmrc_path:
     description: Path to the nvmrc file that contain the node version
-    default: ""
+    default: "./"
 runs:
   using: composite
   steps:
