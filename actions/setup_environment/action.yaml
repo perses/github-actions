@@ -21,7 +21,7 @@ inputs:
     default: "false"
   nvmrc_path:
     description: Path to the nvmrc file that contain the node version
-    default: "./"
+    default: ".nvmrc"
 runs:
   using: composite
   steps:
@@ -39,7 +39,7 @@ runs:
       uses: actions/setup-node@v4
       if: inputs.enable_npm == 'true'
       with:
-        node-version-file: "${{ nvmrc_path }}.nvmrc"
+        node-version-file: ${{ inputs.nvmrc_path }}
         registry-url: "https://registry.npmjs.org"
     - uses: actions/cache@v3.0.8
       if: inputs.enable_npm == 'true'
