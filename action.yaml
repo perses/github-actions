@@ -7,3 +7,4 @@ runs:
       with:
         repository: 'perses/github-actions'
         path: '.github/perses-ci'
+        ref: v0.5.2
