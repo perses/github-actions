@@ -1,0 +1,46 @@
+name: ci
+on:
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches:
+      - main
+      - release/*
+      - snapshot/*
+    tags:
+      - v*
+  pull_request:
+  merge_group:
+jobs:
+  test-perses-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Call Perses-CI
+        uses: ./
+        with:
+          version: "" 
+      
+      - name: Validate code checkout
+        run: |
+          if [ ! -d ".github/perses-ci" ]; then
+            echo "Error: Source code was not checked out at the expected location."
+            exit 1
+          fi
+
+          if [ ! -f ".github/perses-ci/actions/setup_environment/action.yaml" ]; then
+            echo "Error: Expected file is missing."
+            exit 1
+          fi
+
+  test-install-percli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install percli
+        uses: ./actions/install_percli
+        with:
+          cli_version: "latest"

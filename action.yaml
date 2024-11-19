@@ -1,5 +1,9 @@
 name: Perses-CI
 description: An action used by the Perses project to share github actions.
+inputs:
+  version:
+    description: "Version of perses/github-actions to use"
+    default: ""
 runs:
   using: composite
   steps:
@@ -7,4 +11,4 @@ runs:
       with:
         repository: 'perses/github-actions'
         path: '.github/perses-ci'
-        ref: v0.5.2
+        ref: ${{ inputs.version }}
