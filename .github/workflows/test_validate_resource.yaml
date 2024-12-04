@@ -1,0 +1,56 @@
+name: Test resources validation
+on:
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches:
+      - main
+      - release/*
+      - snapshot/*
+    tags:
+      - v*
+  pull_request:
+  merge_group:
+jobs:
+  test-validate-resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install percli
+        uses: ./actions/install_percli
+        with:
+          cli_version: "latest"
+
+      - name: Install cue binary
+        uses: ./actions/setup_environment
+        with:
+          enable_go: true
+          enable_cue: true
+
+      - name: Test resources validation with directory
+        uses: ./actions/validate_resources
+        with:
+          directory: "./testdata/resources_folder"
+
+      - name: Test resources validation with file
+        uses: ./actions/validate_resources
+        with:
+          file: "./testdata/resource.json"
+
+      - name: Test resources validation with both inputs (should fail)
+        id: test_fail
+        uses: ./actions/validate_resources
+        with:
+          directory: "./testdata/resources_folder"
+          file: "./testdata/resource.json"
+        continue-on-error: true
+      
+      - name: Validate failure for both inputs
+        run: |
+          if [ "${{ steps.test_fail.outcome }}" != "failure" ]; then
+            echo "Error: Action did not fail as expected when both inputs were provided."
+            exit 1
+          else
+            echo "Success: Action failed as expected."
+          fi
