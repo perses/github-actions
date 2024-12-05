@@ -7,6 +7,9 @@ inputs:
   file:
     description: Path to the file that contains the resources consumed by the command.
     required: false
+  online:
+    description: When enabled, it can request the API to make additional validation.
+    required: false
 runs:
   using: composite
   steps:
@@ -14,5 +17,6 @@ runs:
       run: |
         percli lint \
           $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
-          $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}")
+          $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
+          $([[ -n "${{ inputs.online }}" ]] && echo "--online ${{ inputs.online }}")
       shell: bash
