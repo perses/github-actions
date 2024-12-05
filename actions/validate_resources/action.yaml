@@ -1,5 +1,5 @@
-name: "Build the dashboards as code"
-description: "Run the `lint` command of percli to validate the dashboards"
+name: Build the dashboards as code
+description: Run the `lint` command of percli to validate the dashboards
 inputs:
   directory:
     description: Path to the directory containing the resources consumed by the command.

@@ -20,7 +20,7 @@ jobs:
       - name: Install percli
         uses: ./actions/install_percli
         with:
-          cli_version: "latest"
+          cli_version: latest
 
       - name: Install cue binary
         uses: ./actions/setup_environment

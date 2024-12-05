@@ -1,12 +1,12 @@
-name: "Setup environment"
-description: "Setup GO or NPM environment"
+name: Setup environment
+description: Setup GO or NPM environment"
 inputs:
   enable_go:
     description: Whether to enable go specific features, such as caching.
     default: "false"
   go_version:
     description: The Go version to be used if Go is enable
-    default: "1.23.x"
+    default: 1.23.x
   enable_go_cache:
     description: Whether you want to cache the go dependencies
     default: "true"
@@ -15,13 +15,13 @@ inputs:
     default: "false"
   cue_version:
     description: The Cue version to be used if Cue is enable
-    default: "v0.8.0"
+    default: v0.8.0
   enable_npm:
     description: Whether to enable npm specific features, such as caching.
     default: "false"
   nvmrc_path:
     description: Path to the nvmrc file that contain the node version
-    default: ".nvmrc"
+    default: .nvmrc
 runs:
   using: composite
   steps:

@@ -1,5 +1,5 @@
-name: "Build the dashboards as code"
-description: "Run the `dac build` command of percli to build the dashboards as code"
+name: Build the dashboards as code
+description: Run the `dac build` command of percli to build the dashboards as code
 inputs:
   directory:
     description: Path to the directory containing the resources consumed by the command.

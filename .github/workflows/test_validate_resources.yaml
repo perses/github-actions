@@ -20,7 +20,7 @@ jobs:
       - name: Install percli
         uses: ./actions/install_percli
         with:
-          cli_version: "latest"
+          cli_version: latest
 
       - name: Install cue binary
         uses: ./actions/setup_environment
@@ -31,19 +31,19 @@ jobs:
       - name: Test resources validation with directory
         uses: ./actions/validate_resources
         with:
-          directory: "./testdata/resources_folder"
+          directory: ./testdata/resources_folder
 
       - name: Test resources validation with file
         uses: ./actions/validate_resources
         with:
-          file: "./testdata/resource.json"
+          file: ./testdata/resource.json
 
       - name: Test resources validation with both inputs (should fail)
         id: test_fail
         uses: ./actions/validate_resources
         with:
-          directory: "./testdata/resources_folder"
-          file: "./testdata/resource.json"
+          directory: ./testdata/resources_folder
+          file: ./testdata/resource.json
         continue-on-error: true
       
       - name: Validate failure for both inputs
