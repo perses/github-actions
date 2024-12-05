@@ -10,23 +10,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      run: |
-        if [[ -z "${{ inputs.directory }}" && -z "${{ inputs.file }}" ]]; then
-          echo "Error: Either 'directory' or 'file' must be provided." >&2
-          exit 1
-        fi
-        if [[ -n "${{ inputs.directory }}" && -n "${{ inputs.file }}" ]]; then
-          echo "Error: Only one of 'directory' or 'file' can be provided, not both." >&2
-          exit 1
-        fi
-      shell: bash
-
     - name: Run the `dac build` command
       run: |
-        if [[ -n "${{ inputs.directory }}" ]]; then
-          percli dac build -d "${{ inputs.directory }}"
-        elif [[ -n "${{ inputs.file }}" ]]; then
-          percli dac build -f "${{ inputs.file }}"
-        fi
+        percli dac build \
+          $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
+          $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}")
       shell: bash
