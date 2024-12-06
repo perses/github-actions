@@ -1,5 +1,5 @@
 name: Build the dashboards as code
-description: Run the `dac preview` command of percli to preview the dashboards
+description: Run the `dac diff` command of percli to generate diffs between the local dashboards and their remote counterparts on the API server
 inputs:
   url:
     description: The URL of the Perses API server where to deploy the dashboard preview.
