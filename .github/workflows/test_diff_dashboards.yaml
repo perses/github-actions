@@ -1,0 +1,32 @@
+name: Test Diff Dashboards
+on:
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches:
+      - main
+      - release/*
+      - snapshot/*
+    tags:
+      - v*
+  pull_request:
+  merge_group:
+jobs:
+  test-diff-dashboards:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install percli
+        uses: ./actions/install_percli
+        with:
+          cli_version: "latest"
+
+      - name: Test dashboard diff
+        uses: ./actions/diff_dashboards
+        with:
+          url: https://demo.perses.dev
+          directory: ./testdata/resources_folder
+          username: test
+          password: test
+
