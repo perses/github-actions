@@ -1,5 +1,5 @@
 name: Setup environment
-description: Setup GO or NPM environment"
+description: Setup GO or NPM environment
 inputs:
   enable_go:
     description: Whether to enable go specific features, such as caching.

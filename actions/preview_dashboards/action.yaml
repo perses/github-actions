@@ -1,5 +1,5 @@
-name: "Build the dashboards as code"
-description: "Run the `dac preview` command of percli to preview the dashboards"
+name: Preview dashboards
+description: Run the `dac preview` command of percli to preview the dashboards
 inputs:
   url:
     description: The URL of the Perses API server where to deploy the dashboard preview.
