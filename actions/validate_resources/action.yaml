@@ -2,10 +2,10 @@ name: Validate resources
 description: Run the `lint` command of percli to validate Perses resources
 inputs:
   directory:
-    description: Path to the directory containing the resources consumed by the command.
+    description: Path to the directory containing the resources consumed by the command (mutually exclusive with `file`).
     required: false
   file:
-    description: Path to the file that contains the resources consumed by the command.
+    description: Path to the file that contains the resources consumed by the command (mutually exclusive with `directory`).
     required: false
   online:
     description: When enabled, it can request the API to make additional validation.

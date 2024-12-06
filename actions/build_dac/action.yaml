@@ -2,10 +2,10 @@ name: Build the dashboards as code
 description: Run the `dac build` command of percli to build the dashboards as code
 inputs:
   directory:
-    description: Path to the directory containing the resources consumed by the command.
+    description: Path to the directory containing the resources consumed by the command  (mutually exclusive with `file`).
     required: false
   file:
-    description: Path to the file that contains the resources consumed by the command.
+    description: Path to the file that contains the resources consumed by the command (mutually exclusive with `directory`).
     required: false
   mode:
     description: Mode for the output. Must be either file to automatically save the content to file(s), or `stdout` to print on the standard output. (default "file")
