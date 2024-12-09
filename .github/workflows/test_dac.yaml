@@ -1,0 +1,23 @@
+name: Test the Dashboard-as-Code workflow
+
+on:
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches:
+      - main
+      - release/*
+      - snapshot/*
+    tags:
+      - v*
+  pull_request:
+  merge_group:
+jobs:
+  test-dac:
+    uses: ./.github/workflows/dac.yaml
+    with:
+      url: https://demo.perses.dev
+      directory: ./testdata/dac_folder
+      username: test
+      password: test
+      skip_preview: true
+      skip_diff: true
