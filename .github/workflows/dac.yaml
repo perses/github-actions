@@ -1,0 +1,175 @@
+name: Reusable Workflow for Dashboard-as-Code CI/CD
+on:
+  workflow_call:
+    inputs:
+      # general:
+      url:
+        description: The URL of the Perses API server where to deploy the dashboard preview.
+        type: string
+        required: true
+      directory:
+        description: Path to the directory containing the dashboards as code (mutually exclusive with `file`).
+        type: string
+        required: false
+      file:
+        description: Path to the file that contains the dashboards as code (mutually exclusive with `directory`).
+        type: string
+        required: false
+      project:
+        description: If present, the project scope for this CLI request.
+        type: string
+        required: false
+      # skip:
+      skip_preview:
+        description: Skip the dashboard preview stage if provided.
+        type: boolean
+        required: false
+      skip_diff:
+        description: Skip the dashboard diff generation stage if provided.
+        type: boolean
+        required: false
+      skip_deploy:
+        description: Skip the dashboard deployment stage if provided.
+        type: boolean
+        required: false
+      # auth:
+      username:
+        description: Username for basic authentication to the API server.
+        type: string
+        required: false
+      password:
+        description: Password for basic authentication to the API server.
+        type: string
+        required: false
+      token:
+        description: Bearer token for authentication to the API server.
+        type: string
+        required: false
+      provider:
+        description: External authentication provider identifier. (slug_id)
+        type: string
+        required: false
+      client-id:
+        description: Client ID used for robotic access when using external authentication provider.
+        type: string
+        required: false
+      client-secret:
+        description: Client Secret used for robotic access when using external authentication provider.
+        type: string
+        required: false
+      insecure-skip-tls-verify:
+        description: If true the server's certificate will not be checked for validity. This will make your HTTPS connections insecure.
+        type: string
+        required: false
+      # validate-specific:
+      online:
+        description: When enabled, it can request the API to make additional validation.
+        type: boolean
+        required: false
+      # preview-specific:
+      output:
+        description: "Format of the output: json or yaml (default is yaml)."
+        type: string
+        required: false
+      prefix:
+        description: If provided, it is used to prefix the dashboard preview name.
+        type: string
+        required: false
+      ttl:
+        description: Time To Live of the dashboard preview (default "1d").
+        type: string
+        required: false
+      # deploy-specific:
+      force:
+        description: If present, dashboards will be deployed even if the projects are not consistent between the --project flag and the dashboards metadata (the latter has priority).
+        type: boolean
+        required: false
+
+jobs:
+  dac:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install necessary tools
+        uses: ./actions/setup_environment
+        with:
+          enable_go: true
+          enable_cue: true
+
+      - name: Install percli
+        uses: ./actions/install_percli
+        with:
+          cli_version: "latest"
+
+      - name: Build the dashboards
+        uses: ./actions/build_dac
+        with:
+          directory: ${{ inputs.directory }}
+          file: ${{ inputs.file }}
+
+      - name: Validate the dashboards
+        uses: ./actions/validate_resources
+        with:
+          directory: ./built
+
+      # TODO append preview links to PR
+      - name: Preview the dashboards
+        if: ${{ !inputs.skip_preview }}
+        uses: ./actions/preview_dashboards
+        with:
+          # general:
+          url: ${{ inputs.url }}
+          directory: ./built
+          project: ${{ inputs.project }}
+          # auth:
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
+          token: ${{ inputs.token }}
+          provider: ${{ inputs.provider }}
+          client-id: ${{ inputs.client-id }}
+          client-secret: ${{ inputs.client-secret }}
+          insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
+          # preview-specific
+          output: ${{ inputs.output }}
+          prefix: ${{ inputs.prefix }}
+          ttl: ${{ inputs.ttl }}
+
+      # TODO append diff to PR
+      - name: Generate dashboards diffs
+        if: ${{ !inputs.skip_diff }}
+        uses: ./actions/diff_dashboards
+        with:
+          # general inputs:
+          url: ${{ inputs.url }}
+          directory: ./built
+          project: ${{ inputs.project }}
+          # auth inputs:
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
+          token: ${{ inputs.token }}
+          provider: ${{ inputs.provider }}
+          client-id: ${{ inputs.client-id }}
+          client-secret: ${{ inputs.client-secret }}
+          insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
+
+      # TODO skip deploy if pull request
+      - name: Deploy the dashboards
+        if: ${{ !inputs.skip_deploy }}
+        uses: ./actions/apply_resources
+        with:
+          # general:
+          url: ${{ inputs.url }}
+          directory: ./built
+          project: ${{ inputs.project }}
+          # auth:
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
+          token: ${{ inputs.token }}
+          provider: ${{ inputs.provider }}
+          client-id: ${{ inputs.client-id }}
+          client-secret: ${{ inputs.client-secret }}
+          insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
+          # deploy-specific:
+          force: ${{ inputs.force }}

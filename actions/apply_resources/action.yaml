@@ -58,5 +58,5 @@ runs:
           $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
           $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
           $([[ -n "${{ inputs.project }}" ]] && echo "--project ${{ inputs.project }}") \
-          $([[ -n "${{ inputs.force }}" ]] && echo "--project ${{ inputs.force }}")
+          $([[ "${{ inputs.force }}" == "true" ]] && echo "--force")
       shell: bash
