@@ -55,7 +55,7 @@ runs:
           $([[ -n "${{ inputs.provider }}" ]] && echo "--provider ${{ inputs.provider }}") \
           $([[ -n "${{ inputs.client-id }}" ]] && echo "--client-id ${{ inputs.client-id }}") \
           $([[ -n "${{ inputs.client-secret }}" ]] && echo "--client-secret ${{ inputs.client-secret }}") \
-          $([[ -n "${{ inputs.insecure-skip-tls-verify }}" ]] && echo "--insecure-skip-tls-verify ${{ inputs.insecure-skip-tls-verify }}")
+          $([[ "${{ inputs.insecure-skip-tls-verify}}" == "true" ]] && echo "--insecure-skip-tls-verify")
       shell: bash
 
     - name: Run the `dac preview` command
