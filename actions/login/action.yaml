@@ -1,5 +1,5 @@
-name: Build the dashboards as code
-description: Run the `dac diff` command of percli to generate diffs between the local dashboards and their remote counterparts on the API server
+name: Login to Perses
+description: Run the `login` command of percli to authenticate to the API server
 inputs:
   url:
     description: The URL of the Perses API server where to deploy the dashboard preview.
@@ -31,28 +31,17 @@ inputs:
   insecure-skip-tls-verify:
     description: If true the server's certificate will not be checked for validity. This will make your HTTPS connections insecure.
     required: false
-  project:
-    description: If present, the project scope for this CLI request.
-    required: false
 runs:
   using: composite
   steps:
     - name: Login to the Perses API
-      uses: ./actions/login
-      with:
-        url: ${{ inputs.url }}
-        username: ${{ inputs.username }}
-        password: ${{ inputs.password }}
-        token: ${{ inputs.token }}
-        provider: ${{ inputs.provider }}
-        client-id: ${{ inputs.client-id }}
-        client-secret: ${{ inputs.client-secret }}
-        insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
-
-    - name: Run the `dac diff` command
       run: |
-        percli dac diff \
-          $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
-          $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
-          $([[ -n "${{ inputs.project }}" ]] && echo "--project ${{ inputs.project }}")
+        percli login ${{ inputs.url }} \
+          $([[ -n "${{ inputs.username }}" ]] && echo "-u ${{ inputs.username }}") \
+          $([[ -n "${{ inputs.password }}" ]] && echo "-p ${{ inputs.password }}") \
+          $([[ -n "${{ inputs.token }}" ]] && echo "--token ${{ inputs.token }}") \
+          $([[ -n "${{ inputs.provider }}" ]] && echo "--provider ${{ inputs.provider }}") \
+          $([[ -n "${{ inputs.client-id }}" ]] && echo "--client-id ${{ inputs.client-id }}") \
+          $([[ -n "${{ inputs.client-secret }}" ]] && echo "--client-secret ${{ inputs.client-secret }}") \
+          $([[ "${{ inputs.insecure-skip-tls-verify}}" == "true" ]] && echo "--insecure-skip-tls-verify")
       shell: bash

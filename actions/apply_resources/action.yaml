@@ -41,16 +41,16 @@ runs:
   using: composite
   steps:
     - name: Login to the Perses API
-      run: |
-        percli login ${{ inputs.url }} \
-          $([[ -n "${{ inputs.username }}" ]] && echo "-u ${{ inputs.username }}") \
-          $([[ -n "${{ inputs.password }}" ]] && echo "-p ${{ inputs.password }}") \
-          $([[ -n "${{ inputs.token }}" ]] && echo "--token ${{ inputs.token }}") \
-          $([[ -n "${{ inputs.provider }}" ]] && echo "--provider ${{ inputs.provider }}") \
-          $([[ -n "${{ inputs.client-id }}" ]] && echo "--client-id ${{ inputs.client-id }}") \
-          $([[ -n "${{ inputs.client-secret }}" ]] && echo "--client-secret ${{ inputs.client-secret }}") \
-          $([[ "${{ inputs.insecure-skip-tls-verify}}" == "true" ]] && echo "--insecure-skip-tls-verify")
-      shell: bash
+      uses: ./actions/login
+      with:
+        url: ${{ inputs.url }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        token: ${{ inputs.token }}
+        provider: ${{ inputs.provider }}
+        client-id: ${{ inputs.client-id }}
+        client-secret: ${{ inputs.client-secret }}
+        insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
 
     - name: Run the `apply` command
       run: |
