@@ -67,10 +67,6 @@ on:
         type: boolean
         required: false
       # preview-specific:
-      prefix: # TODO should be replaced by automatic passing of PR number
-        description: If provided, it is used to prefix the dashboard preview name.
-        type: string
-        required: false
       ttl:
         description: Time To Live of the dashboard preview (default "1d").
         type: string
@@ -129,7 +125,6 @@ jobs:
         with:
           directory: ./built
           project: ${{ inputs.project }}
-          prefix: ${{ inputs.prefix }}
           ttl: ${{ inputs.ttl }}
 
       # TODO append diff to PR
