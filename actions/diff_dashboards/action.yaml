@@ -43,7 +43,7 @@ runs:
           const runId = process.env.GITHUB_RUN_ID;
           const repoUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}`;
           const artifactUrl = `${repoUrl}/actions/runs/${runId}`;
-          const commentBody = `### Dashboard Diffs\nThe dashboard diffs have been uploaded as an artifact.\n\n[Download Artifact](artifactUrl)`;
+          const commentBody = `### Dashboard diffs\nThe dashboard diffs can be downloaded from the [workflow artifacts](artifactUrl).`;
           github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
