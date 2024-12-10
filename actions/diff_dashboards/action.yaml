@@ -28,3 +28,25 @@ runs:
           $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
           $([[ -n "${{ inputs.project }}" ]] && echo "--project ${{ inputs.project }}")
       shell: bash
+
+    - name: Upload diffs as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dashboard-diffs
+        path: built/
+    
+    - name: Post artifacts link to PR
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const runId = process.env.GITHUB_RUN_ID;
+          const repoUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}`;
+          const artifactUrl = `${repoUrl}/actions/runs/${runId}`;
+          const commentBody = `### Dashboard Diffs\nThe dashboard diffs have been uploaded as an artifact.\n\n[Download Artifact](artifactUrl)`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: commentBody.replace('artifactUrl', artifactUrl)
+          });
