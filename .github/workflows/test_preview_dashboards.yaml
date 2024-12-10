@@ -33,3 +33,4 @@ jobs:
         uses: ./actions/preview_dashboards
         with:
           file: ./testdata/resources_folder/dashboard.json
+          prefix: test-preview

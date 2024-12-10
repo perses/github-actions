@@ -9,6 +9,9 @@ inputs:
   file:
     description: Path to the file that contains the resources consumed by the command (mutually exclusive with `directory`).
     required: false
+  prefix:
+    description: If provided, it is used to prefix the dashboard preview name.
+    required: false
   project:
     description: If present, the project scope for this CLI request.
     required: false
@@ -23,9 +26,9 @@ runs:
         percli dac preview \
           $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
           $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
+          $([[ -n "${{ inputs.prefix }}" ]] && echo "--prefix ${{ inputs.prefix }}") \
           $([[ -n "${{ inputs.project }}" ]] && echo "--project ${{ inputs.project }}") \
           $([[ -n "${{ inputs.ttl }}" ]] && echo "--ttl ${{ inputs.ttl }}") \
-          --prefix "PR-${{ github.event.pull_request.number }}" \
           -o json \
           > preview_output.json
       shell: bash

@@ -19,5 +19,4 @@ jobs:
       directory: ./testdata/dac_folder
       username: test
       password: test
-      skip_preview: true
       skip_diff: true
