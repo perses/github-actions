@@ -62,8 +62,8 @@ on:
         type: string
         required: false
       # validate-specific:
-      online:
-        description: When enabled, it can request the API to make additional validation.
+      server-validation:
+        description: When enabled, requests the API to make additional validation.
         type: boolean
         required: false
       # preview-specific:
@@ -101,11 +101,6 @@ jobs:
           directory: ${{ inputs.directory }}
           file: ${{ inputs.file }}
 
-      - name: Validate the dashboards
-        uses: ./actions/validate_resources
-        with:
-          directory: ./built
-
       - name: Login to the API server
         uses: ./actions/login
         with:
@@ -117,6 +112,12 @@ jobs:
           client-id: ${{ inputs.client-id }}
           client-secret: ${{ inputs.client-secret }}
           insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
+
+      - name: Validate the dashboards
+        uses: ./actions/validate_resources
+        with:
+          directory: ./built
+          online: ${{ inputs.server-validation }}
 
       - name: Preview the dashboards
         if: ${{ github.event_name == 'pull_request' && !inputs.skip_preview }}

@@ -17,6 +17,7 @@ jobs:
     with:
       url: https://demo.perses.dev
       directory: ./testdata/dac_folder
+      server-validation: true
       username: test
       password: test
       skip_diff: true

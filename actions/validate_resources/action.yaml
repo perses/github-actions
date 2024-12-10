@@ -20,5 +20,5 @@ runs:
         percli lint \
           $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
           $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
-          $([[ -n "${{ inputs.online }}" ]] && echo "--online ${{ inputs.online }}")
+          $([[ "${{ inputs.online }}" == "true" ]] && echo "--online")
       shell: bash
