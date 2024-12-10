@@ -20,4 +20,3 @@ jobs:
       server-validation: true
       username: test
       password: test
-      skip_diff: true
