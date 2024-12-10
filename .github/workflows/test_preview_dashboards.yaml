@@ -22,11 +22,14 @@ jobs:
         with:
           cli_version: "latest"
 
-      - name: Test dashboard preview
-        uses: ./actions/preview_dashboards
+      - name: Login to the API server
+        uses: ./actions/login
         with:
           url: https://demo.perses.dev
-          file: ./testdata/resources_folder/dashboard.json
           username: test
           password: test
 
+      - name: Test dashboard preview
+        uses: ./actions/preview_dashboards
+        with:
+          file: ./testdata/resources_folder/dashboard.json

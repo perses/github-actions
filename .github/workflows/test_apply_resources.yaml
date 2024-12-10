@@ -22,11 +22,15 @@ jobs:
         with:
           cli_version: "latest"
 
+      - name: Login to the API server
+        uses: ./actions/login
+        with:
+          url: https://demo.perses.dev
+          username: test
+          password: test
+
       - name: Test apply resources
         uses: ./actions/apply_resources
         with:
-          url: https://demo.perses.dev
           file: ./testdata/resources_folder/dashboard.json
-          username: test
-          password: test
 

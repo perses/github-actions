@@ -22,11 +22,14 @@ jobs:
         with:
           cli_version: "latest"
 
-      - name: Test dashboard diff
-        uses: ./actions/diff_dashboards
+      - name: Login to the API server
+        uses: ./actions/login
         with:
           url: https://demo.perses.dev
-          directory: ./testdata/resources_folder
           username: test
           password: test
 
+      - name: Test dashboard diff
+        uses: ./actions/diff_dashboards
+        with:
+          directory: ./testdata/resources_folder

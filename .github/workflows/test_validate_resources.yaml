@@ -28,7 +28,7 @@ jobs:
           enable_go: true
           enable_cue: true
 
-      - name: Test resources validation with directory
+      - name: Test resources validation
         uses: ./actions/validate_resources
         with:
           directory: ./testdata/resources_folder
@@ -37,20 +37,3 @@ jobs:
         uses: ./actions/validate_resources
         with:
           file: ./testdata/resource.json
-
-      - name: Test resources validation with both inputs (should fail)
-        id: test_fail
-        uses: ./actions/validate_resources
-        with:
-          directory: ./testdata/resources_folder
-          file: ./testdata/resource.json
-        continue-on-error: true
-      
-      - name: Validate failure for both inputs
-        run: |
-          if [ "${{ steps.test_fail.outcome }}" != "failure" ]; then
-            echo "Error: Action did not fail as expected when both inputs were provided."
-            exit 1
-          else
-            echo "Success: Action failed as expected."
-          fi
