@@ -128,7 +128,7 @@ jobs:
 
       # TODO append preview links to PR
       - name: Preview the dashboards
-        if: ${{ !inputs.skip_preview }}
+        if: ${{ github.event_name == 'pull_request' && !inputs.skip_preview }}
         uses: ./actions/preview_dashboards
         with:
           directory: ./built
@@ -139,15 +139,14 @@ jobs:
 
       # TODO append diff to PR
       - name: Generate dashboards diffs
-        if: ${{ !inputs.skip_diff }}
+        if: ${{ github.event_name == 'pull_request' && !inputs.skip_diff }}
         uses: ./actions/diff_dashboards
         with:
           directory: ./built
           project: ${{ inputs.project }}
 
-      # TODO skip deploy if pull request
       - name: Deploy the dashboards
-        if: ${{ !inputs.skip_deploy }}
+        if: ${{ github.event_name != 'pull_request' && !inputs.skip_deploy }}
         uses: ./actions/apply_resources
         with:
           directory: ./built
