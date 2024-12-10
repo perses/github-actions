@@ -127,7 +127,6 @@ jobs:
           prefix: ${{ github.event.pull_request.number }}
           ttl: ${{ inputs.ttl }}
 
-      # TODO append diff to PR
       - name: Generate dashboards diffs
         if: ${{ github.event_name == 'pull_request' && !inputs.skip_diff }}
         uses: ./actions/diff_dashboards

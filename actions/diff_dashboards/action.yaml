@@ -1,4 +1,4 @@
-name: Build the dashboards as code
+name: Diff dashboards
 description: |
   Run the `dac diff` command of percli to generate diffs between the local dashboards and their remote counterparts on the API server.
   **Note:** Login to an API server is required before running this action. You can use the provided `login` action for this purpose.
@@ -15,6 +15,12 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Create the output folder
+      run: |
+        # Remove this step when a release embedding https://github.com/perses/perses/pull/2484 is available.
+        mkdir built
+      shell: bash
+
     - name: Run the `dac diff` command
       run: |
         percli dac diff \
