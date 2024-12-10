@@ -114,16 +114,10 @@ jobs:
         with:
           directory: ./built
 
-      # TODO append preview links to PR
-      - name: Preview the dashboards
-        if: ${{ !inputs.skip_preview }}
-        uses: ./actions/preview_dashboards
+      - name: Login to the API server
+        uses: ./actions/login
         with:
-          # general:
           url: ${{ inputs.url }}
-          directory: ./built
-          project: ${{ inputs.project }}
-          # auth:
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
           token: ${{ inputs.token }}
@@ -131,7 +125,14 @@ jobs:
           client-id: ${{ inputs.client-id }}
           client-secret: ${{ inputs.client-secret }}
           insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
-          # preview-specific
+
+      # TODO append preview links to PR
+      - name: Preview the dashboards
+        if: ${{ !inputs.skip_preview }}
+        uses: ./actions/preview_dashboards
+        with:
+          directory: ./built
+          project: ${{ inputs.project }}
           output: ${{ inputs.output }}
           prefix: ${{ inputs.prefix }}
           ttl: ${{ inputs.ttl }}
@@ -141,35 +142,14 @@ jobs:
         if: ${{ !inputs.skip_diff }}
         uses: ./actions/diff_dashboards
         with:
-          # general inputs:
-          url: ${{ inputs.url }}
           directory: ./built
           project: ${{ inputs.project }}
-          # auth inputs:
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
-          token: ${{ inputs.token }}
-          provider: ${{ inputs.provider }}
-          client-id: ${{ inputs.client-id }}
-          client-secret: ${{ inputs.client-secret }}
-          insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
 
       # TODO skip deploy if pull request
       - name: Deploy the dashboards
         if: ${{ !inputs.skip_deploy }}
         uses: ./actions/apply_resources
         with:
-          # general:
-          url: ${{ inputs.url }}
           directory: ./built
           project: ${{ inputs.project }}
-          # auth:
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
-          token: ${{ inputs.token }}
-          provider: ${{ inputs.provider }}
-          client-id: ${{ inputs.client-id }}
-          client-secret: ${{ inputs.client-secret }}
-          insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
-          # deploy-specific:
           force: ${{ inputs.force }}

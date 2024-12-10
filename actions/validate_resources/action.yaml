@@ -1,5 +1,7 @@
 name: Validate resources
-description: Run the `lint` command of percli to validate Perses resources
+description: |
+  Run the `lint` command of percli to validate Perses resources
+  **Note:** In online mode, login to an API server is required before running this action. You can use the provided `login` action for this purpose.
 inputs:
   directory:
     description: Path to the directory containing the resources consumed by the command (mutually exclusive with `file`).

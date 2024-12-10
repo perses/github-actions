@@ -1,35 +1,13 @@
 name: Preview dashboards
-description: Run the `dac preview` command of percli to deploy ephemeral dashboards to the API server
+description: |
+  Run the `dac preview` command of percli to deploy ephemeral dashboards to the API server
+  **Note:** Login to an API server is required before running this action. You can use the provided `login` action for this purpose.
 inputs:
-  url:
-    description: The URL of the Perses API server where to deploy the dashboard preview.
-    required: true
   directory:
     description: Path to the directory containing the resources consumed by the command (mutually exclusive with `file`).
     required: false
   file:
     description: Path to the file that contains the resources consumed by the command (mutually exclusive with `directory`).
-    required: false
-  username:
-    description: Username for basic authentication to the API server.
-    required: false
-  password:
-    description: Password for basic authentication to the API server.
-    required: false
-  token:
-    description: Bearer token for authentication to the API server.
-    required: false
-  provider:
-    description: External authentication provider identifier. (slug_id)
-    required: false
-  client-id:
-    description: Client ID used for robotic access when using external authentication provider.
-    required: false
-  client-secret:
-    description: Client Secret used for robotic access when using external authentication provider.
-    required: false
-  insecure-skip-tls-verify:
-    description: If true the server's certificate will not be checked for validity. This will make your HTTPS connections insecure.
     required: false
   output:
     description: "Format of the output: json or yaml (default is yaml)."
@@ -46,18 +24,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Login to the Perses API
-      uses: ./actions/login
-      with:
-        url: ${{ inputs.url }}
-        username: ${{ inputs.username }}
-        password: ${{ inputs.password }}
-        token: ${{ inputs.token }}
-        provider: ${{ inputs.provider }}
-        client-id: ${{ inputs.client-id }}
-        client-secret: ${{ inputs.client-secret }}
-        insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
-
     - name: Run the `dac preview` command
       run: |
         percli dac preview \
