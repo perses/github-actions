@@ -9,9 +9,6 @@ inputs:
   file:
     description: Path to the file that contains the resources consumed by the command (mutually exclusive with `directory`).
     required: false
-  output:
-    description: "Format of the output: json or yaml (default is yaml)."
-    required: false
   prefix:
     description: If provided, it is used to prefix the dashboard preview name.
     required: false
@@ -29,8 +26,25 @@ runs:
         percli dac preview \
           $([[ -n "${{ inputs.directory }}" ]] && echo "-d ${{ inputs.directory }}") \
           $([[ -n "${{ inputs.file }}" ]] && echo "-f ${{ inputs.file }}") \
-          $([[ -n "${{ inputs.output }}" ]] && echo "-o ${{ inputs.output }}") \
           $([[ -n "${{ inputs.prefix }}" ]] && echo "--prefix ${{ inputs.prefix }}") \
           $([[ -n "${{ inputs.project }}" ]] && echo "--project ${{ inputs.project }}") \
-          $([[ -n "${{ inputs.ttl }}" ]] && echo "--ttl ${{ inputs.ttl }}")
+          $([[ -n "${{ inputs.ttl }}" ]] && echo "--ttl ${{ inputs.ttl }}") \
+          -o json \
+          > preview_output.json
       shell: bash
+
+    - name: Post preview links to PR
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('preview_output.json', 'utf8'));
+          const previewLinks = data.map(item => `- [${item.project}/${item.dashboard}](${item.preview})`).join('\n');
+          const commentBody = `### Dashboard previews\nThe following ephemeral dashboards have been deployed:\n\n${previewLinks}`;
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: commentBody
+          });

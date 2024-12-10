@@ -67,11 +67,7 @@ on:
         type: boolean
         required: false
       # preview-specific:
-      output:
-        description: "Format of the output: json or yaml (default is yaml)."
-        type: string
-        required: false
-      prefix:
+      prefix: # TODO should be replaced by automatic passing of PR number
         description: If provided, it is used to prefix the dashboard preview name.
         type: string
         required: false
@@ -133,7 +129,6 @@ jobs:
         with:
           directory: ./built
           project: ${{ inputs.project }}
-          output: ${{ inputs.output }}
           prefix: ${{ inputs.prefix }}
           ttl: ${{ inputs.ttl }}
 
