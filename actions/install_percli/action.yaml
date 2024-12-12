@@ -1,9 +1,9 @@
-name: "Install percli"
-description: "Install the Perses CLI"
+name: Install percli
+description: Install the Perses CLI
 inputs:
   cli_version:
-    description: "Version of percli to install"
-    default: "latest"
+    description: Version of percli to install
+    default: latest
 runs:
   using: composite
   steps:
