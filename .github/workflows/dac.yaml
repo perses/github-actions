@@ -121,7 +121,7 @@ jobs:
         with:
           directory: ./built
           project: ${{ inputs.project }}
-          prefix: ${{ github.event.pull_request.number }}
+          prefix: PR${{ github.event.pull_request.number }}
           ttl: ${{ inputs.ttl }}
 
       - name: Generate dashboards diffs
