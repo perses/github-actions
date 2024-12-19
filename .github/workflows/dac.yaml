@@ -33,28 +33,8 @@ on:
         type: boolean
         required: false
       # auth:
-      username:
-        description: Username for basic authentication to the API server.
-        type: string
-        required: false
-      password:
-        description: Password for basic authentication to the API server.
-        type: string
-        required: false
-      token:
-        description: Bearer token for authentication to the API server.
-        type: string
-        required: false
       provider:
         description: External authentication provider identifier. (slug_id)
-        type: string
-        required: false
-      client-id:
-        description: Client ID used for robotic access when using external authentication provider.
-        type: string
-        required: false
-      client-secret:
-        description: Client Secret used for robotic access when using external authentication provider.
         type: string
         required: false
       insecure-skip-tls-verify:
@@ -75,6 +55,22 @@ on:
       force:
         description: If present, dashboards will be deployed even if the projects are not consistent between the --project flag and the dashboards metadata (the latter has priority).
         type: boolean
+        required: false
+    secrets:
+      username:
+        description: Username for basic authentication to the API server.
+        required: false
+      password:
+        description: Password for basic authentication to the API server.
+        required: false
+      token:
+        description: Bearer token for authentication to the API server.
+        required: false
+      client-id:
+        description: Client ID used for robotic access when using external authentication provider.
+        required: false
+      client-secret:
+        description: Client Secret used for robotic access when using external authentication provider.
         required: false
 
 jobs:
@@ -105,12 +101,12 @@ jobs:
         uses: ./actions/login
         with:
           url: ${{ inputs.url }}
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
-          token: ${{ inputs.token }}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          token: ${{ secrets.token }}
           provider: ${{ inputs.provider }}
-          client-id: ${{ inputs.client-id }}
-          client-secret: ${{ inputs.client-secret }}
+          client-id: ${{ secrets.client-id }}
+          client-secret: ${{ secrets.client-secret }}
           insecure-skip-tls-verify: ${{ inputs.insecure-skip-tls-verify }}
 
       - name: Validate the dashboards
