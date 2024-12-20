@@ -15,12 +15,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Create the output folder
-      run: |
-        # Remove this step when a release embedding https://github.com/perses/perses/pull/2484 is available.
-        mkdir -p built
-      shell: bash
-
     - name: Run the `dac diff` command
       run: |
         percli dac diff \
