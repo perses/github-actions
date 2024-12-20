@@ -19,6 +19,11 @@ on:
         description: If present, the project scope for this CLI request.
         type: string
         required: false
+      cli_version:
+        description: Version of percli to install
+        type: string
+        default: latest
+        required: false
       # skip:
       skip-preview:
         description: Skip the dashboard preview stage if provided.
@@ -89,7 +94,7 @@ jobs:
       - name: Install percli
         uses: perses/github-actions/actions/install_percli@main
         with:
-          cli_version: "latest"
+          cli_version: ${{ inputs.cli_version }}
 
       - name: Build the dashboards
         uses: perses/github-actions/actions/build_dac@main
