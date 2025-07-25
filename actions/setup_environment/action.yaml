@@ -6,7 +6,7 @@ inputs:
     default: "false"
   go_version:
     description: The Go version to be used if Go is enable
-    default: 1.23.x
+    default: 1.24.x
   enable_go_cache:
     description: Whether you want to cache the go dependencies
     default: "true"
