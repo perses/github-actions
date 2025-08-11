@@ -42,7 +42,7 @@ runs:
         node-version-file: ${{ inputs.nvmrc_path }}
         registry-url: "https://registry.npmjs.org"
     - name: Cache npm
-      uses: actions/cache@v4.2.2
+      uses: actions/cache@v4.2.4
       if: inputs.enable_npm == 'true'
       with:
         path: ~/.npm
