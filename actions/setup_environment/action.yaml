@@ -36,7 +36,7 @@ runs:
       run: go install cuelang.org/go/cmd/cue@${{  inputs.cue_version }}
       shell: bash
     - name: Install nodejs
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       if: inputs.enable_npm == 'true'
       with:
         node-version-file: ${{ inputs.nvmrc_path }}
